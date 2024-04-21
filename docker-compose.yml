@@ -1,0 +1,42 @@
+version: "2.2"
+services:
+  database:
+    image: mariadb:10.10
+    container_name: jet-data
+    ports:
+      - 127.0.0.1:2001:3306
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - jet
+    environment:
+      MARIADB_ROOT_PASSWORD: jet-admin
+    restart: always
+
+  cache:
+    image: redis:7.0
+    container_name: jet-cache
+    ports:
+      - 127.0.0.1:2002:6379
+    networks:
+      - jet
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2
+    container_name: jet-pma
+    ports:
+      - 127.0.0.1:2003:80
+    networks:
+      - jet
+    environment:
+      PMA_HOST: "jet-data"
+    restart: always
+
+volumes:
+  database:
+    driver: local
+
+networks:
+  jet:
+    driver: bridge
