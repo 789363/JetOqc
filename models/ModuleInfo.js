@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./index');  // 引入 Sequelize 实例
+const sequelize = require('./database');
 
 const ModuleInfo = sequelize.define('ModuleInfo', {
   module_id: {
