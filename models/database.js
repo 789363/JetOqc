@@ -1,10 +1,11 @@
 const { Sequelize } = require('sequelize');
 
 // 数据库连接配置
-const sequelize = new Sequelize('database_name', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'mysql',  // 更改为你的数据库方言：'postgres', 'sqlite', 'mssql' 等
-  logging: false,   // 可以设置为 true 以启用日志输出
+const sequelize = new Sequelize('mydb', 'root', 'jet-admin', {
+  host: 'localhost',      // Docker 映射到本地机器的地址
+  port: '2001',           // Docker 映射的端口
+  dialect: 'mysql',       // 使用 MariaDB 时，方言设置为 'mysql'
+  logging: false,         // 根据需要设置日志输出
   pool: {
     max: 5,
     min: 0,
