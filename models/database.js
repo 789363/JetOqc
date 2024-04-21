@@ -1,11 +1,19 @@
 const { Sequelize } = require('sequelize');
+const mysql = require('mysql2/promise');
 
-// 数据库连接配置
-const sequelize = new Sequelize('mydb', 'root', 'jet-admin', {
-  host: 'localhost',      // Docker 映射到本地机器的地址
-  port: '2001',           // Docker 映射的端口
-  dialect: 'mysql',       // 使用 MariaDB 时，方言设置为 'mysql'
-  logging: false,         // 根据需要设置日志输出
+const databaseConfig = {
+  host: 'localhost',
+  port: '2001',
+  user: 'root',
+  password: 'jet-admin',
+  database: 'mydb'
+};
+
+const sequelize = new Sequelize(databaseConfig.database, databaseConfig.user, databaseConfig.password, {
+  host: databaseConfig.host,
+  port: databaseConfig.port,
+  dialect: 'mysql',
+  logging: false,
   pool: {
     max: 5,
     min: 0,
@@ -14,14 +22,35 @@ const sequelize = new Sequelize('mydb', 'root', 'jet-admin', {
   }
 });
 
-// 测试数据库连接
-sequelize.authenticate()
-  .then(() => {
+async function checkAndCreateDatabase() {
+  try {
+    await sequelize.authenticate();
     console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    if (error.name === 'SequelizeConnectionError') {
+      try {
+        const connection = await mysql.createConnection({
+          host: databaseConfig.host,
+          port: databaseConfig.port,
+          user: databaseConfig.user,
+          password: databaseConfig.password
+        });
+        await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseConfig.database}`);
+        await connection.end();
+        console.log('Database created successfully.');
+      } catch (err) {
+        console.error('Failed to create the database:', err);
+      }
 
-// 导出 sequelize 实例供其他文件使用
+      // 重新初始化 Sequelize 实例或确保设置已更新
+      sequelize.sync().then(() => {
+        console.log('Database tables created/updated.');
+      });
+    }
+  }
+}
+
+checkAndCreateDatabase();
+
 module.exports = sequelize;
