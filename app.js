@@ -1,5 +1,6 @@
 const express = require('express');
-const { sequelize } = require('./models'); // 从你的 Sequelize 配置中引入实例
+const { sequelize } = require('./config/database'); // 确保从正确的地方引入 sequelize 实例
+require('./models/associations')(sequelize); // 确保关联设置正确导入并应用
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.listen(PORT, async () => {
   try {
     await sequelize.authenticate();
     console.log('Database connected!');
+    await sequelize.sync(); // 可以选择在这里同步所有模型
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
