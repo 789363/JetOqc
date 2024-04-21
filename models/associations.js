@@ -1,9 +1,9 @@
-const ModuleInfo = require('./models/ModuleInfo');
-const HeaderInfo = require('./models/HeaderInfo');
-const MachineInfo = require('./models/MachineInfo');
-const LineInfo = require('./models/LineInfo');
-const ItemInfo = require('./models/ItemInfo');
-const ResultInfo = require('./models/ResultInfo');
+const ModuleInfo = require('./ModuleInfo');
+const HeaderInfo = require('./HeaderInfo');
+const MachineInfo = require('./MachineInfo');
+const LineInfo = require('./LineInfo');
+const ItemInfo = require('./ItemInfo');
+const ResultInfo = require('./ResultInfo');
 
 function applyAssociations(sequelize) {
     HeaderInfo.hasMany(ModuleInfo, { foreignKey: 'header_id' });

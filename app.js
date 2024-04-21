@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize } = require('./config/database'); // 确保从正确的地方引入 sequelize 实例
+const { sequelize } = require('./models/database'); // 确保从正确的地方引入 sequelize 实例
 require('./models/associations')(sequelize); // 确保关联设置正确导入并应用
 
 const app = express();
