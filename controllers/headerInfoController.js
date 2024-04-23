@@ -1,9 +1,9 @@
-const HeaderInfo = require('../models/HeaderInfo');
+const OpInfo = require('../models/OpInfo');
 
 exports.getAllHeaders = async (req, res) => {
     try {
-        const headers = await HeaderInfo.findAll();
-        res.json(headers);
+        const Ops = await OpInfo.findAll();
+        res.json(Ops);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -11,9 +11,9 @@ exports.getAllHeaders = async (req, res) => {
 
 exports.getHeaderById = async (req, res) => {
     try {
-        const header = await HeaderInfo.findByPk(req.params.id);
-        if (header) {
-            res.json(header);
+        const Op = await OpInfo.findByPk(req.params.id);
+        if (Op) {
+            res.json(Op);
         } else {
             res.status(404).send('Header not found');
         }
@@ -24,8 +24,8 @@ exports.getHeaderById = async (req, res) => {
 
 exports.createHeader = async (req, res) => {
     try {
-        const header = await HeaderInfo.create(req.body);
-        res.status(201).json(header);
+        const Op = await OpInfo.create(req.body);
+        res.status(201).json(Op);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -33,8 +33,8 @@ exports.createHeader = async (req, res) => {
 
 exports.updateHeader = async (req, res) => {
     try {
-        const result = await HeaderInfo.update(req.body, {
-            where: { header_id: req.params.id }
+        const result = await OpInfo.update(req.body, {
+            where: { Op_id: req.params.id }
         });
         if (result[0] === 1) {
             res.send('Header updated successfully');
@@ -48,8 +48,8 @@ exports.updateHeader = async (req, res) => {
 
 exports.deleteHeader = async (req, res) => {
     try {
-        const result = await HeaderInfo.destroy({
-            where: { header_id: req.params.id }
+        const result = await OpInfo.destroy({
+            where: { Op_id: req.params.id }
         });
         if (result === 1) {
             res.send('Header deleted successfully');
