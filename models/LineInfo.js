@@ -8,8 +8,11 @@ const LineInfo = sequelize.define('LineInfo', {
     autoIncrement: true
   },
   line_name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   }
+}, {
+  tableName: 'line_info'
 });
 
 module.exports = LineInfo;

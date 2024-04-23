@@ -8,8 +8,11 @@ const MachineInfo = sequelize.define('MachineInfo', {
     autoIncrement: true
   },
   machine_name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   }
+}, {
+  tableName: 'machine_info'
 });
 
 module.exports = MachineInfo;

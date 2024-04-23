@@ -10,6 +10,8 @@ const ResultInfo = sequelize.define('ResultInfo', {
   result_content: {
     type: DataTypes.JSON
   }
+}, {
+  tableName: 'result_info'
 });
 
 module.exports = ResultInfo;
