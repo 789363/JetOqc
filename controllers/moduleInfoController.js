@@ -1,5 +1,6 @@
 const ModuleInfo = require('../models/ModuleInfo'); // 确保正确设置模型路径
-
+const CheckItems = require('../models/CheckInfo'); // 引入CheckItems模型
+const ItemInfo = require('../models/ItemInfo'); // 引入ItemInfo模型
 exports.getAllModules = async (req, res) => {
     try {
         const modules = await ModuleInfo.findAll();
@@ -11,7 +12,15 @@ exports.getAllModules = async (req, res) => {
 
 exports.getModuleById = async (req, res) => {
     try {
-        const module = await ModuleInfo.findByPk(req.params.id);
+        const module = await ModuleInfo.findByPk(req.params.id, {
+            include: [{
+                model: CheckItems, // 添加CheckItems到查询中
+                as: 'checkItems' // 这个'as'是可选的，取决于你在模型关联中如何命名
+            }, {
+                model: ItemInfo, // 添加ItemInfo到查询中
+                as: 'items' // 这个'as'是可选的，同上
+            }]
+        });
         if (module) {
             res.json(module);
         } else {
