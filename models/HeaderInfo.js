@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
-const LineInfo = require('./line_info'); // 引入LineInfo模型
+const LineInfo = require('./LineInfo'); // 引入LineInfo模型
 const MachineInfo = require('./MachineInfo'); // 引入MachineInfo模型
 
 const HeaderInfo = sequelize.define('HeaderInfo', {
