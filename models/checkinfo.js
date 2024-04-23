@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
-const ModuleInfo = require('./module_info'); // 引入ModuleInfo模型
+const ModuleInfo = require('./ModuleInfo'); // 引入ModuleInfo模型
 
 const CheckItems = sequelize.define('CheckItems', {
   checkitem_id: {

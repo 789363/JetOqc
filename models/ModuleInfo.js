@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database'); // 确保路径正确
-const HeaderInfo = require('./header_info'); // 引入HeaderInfo模型
+const HeaderInfo = require('./HeaderInfo'); // 引入HeaderInfo模型
 
 const ModuleInfo = sequelize.define('ModuleInfo', {
   module_id: {

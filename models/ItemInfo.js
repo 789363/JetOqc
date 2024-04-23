@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
-const ResultInfo = require('./result_info'); // 引入ResultInfo模型
+const ResultInfo = require('./ResultInfo'); // 引入ResultInfo模型
 
 const ItemInfo = sequelize.define('ItemInfo', {
   item_id: {
