@@ -8,10 +8,10 @@ const {
     deleteOp
 } = require('../controllers/OpInfoController');
 
-router.get('/headers', getAllOps);
-router.get('/headers/:id', getOpById);
-router.post('/headers', createOp);
-router.put('/headers/:id', updateOp);
-router.delete('/headers/:id', deleteOp);
+router.get('/ops', getAllOps);
+router.get('/ops/:id', getOpById);
+router.post('/ops', createOp);
+router.put('/ops/:id', updateOp);
+router.delete('/ops/:id', deleteOp);
 
 module.exports = router;

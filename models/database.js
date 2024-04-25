@@ -26,6 +26,9 @@ async function checkAndCreateDatabase() {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
+    // 直接在成功连接后同步模型到数据库
+    await sequelize.sync();
+    console.log('Database tables created/updated.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
     if (error.name === 'SequelizeConnectionError') {
@@ -39,14 +42,14 @@ async function checkAndCreateDatabase() {
         await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseConfig.database}`);
         await connection.end();
         console.log('Database created successfully.');
-      } catch (err) {
-        console.error('Failed to create the database:', err);
-      }
 
-      // 重新初始化 Sequelize 实例或确保设置已更新
-      sequelize.sync().then(() => {
-        console.log('Database tables created/updated.');
-      });
+        // 创建数据库后重新连接并同步模型
+        await sequelize.authenticate();
+        await sequelize.sync();
+        console.log('Database tables created/updated after reconnection.');
+      } catch (err) {
+        console.error('Failed to create the database or sync models:', err);
+      }
     }
   }
 }

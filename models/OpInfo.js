@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
 
-const OpInfo = sequelize.define('LineInfo', {
+const OpInfo = sequelize.define('OpInfo', {
   Op_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -12,7 +12,7 @@ const OpInfo = sequelize.define('LineInfo', {
     allowNull: false
   }
 }, {
-  tableName: 'Op_info'
+  tableName: 'op_info'
 });
 
 module.exports = OpInfo;
