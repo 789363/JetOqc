@@ -9,13 +9,16 @@ exports.getAllItems = async (req, res) => {
     }
 };
 
-exports.getItemById = async (req, res) => {
+exports.getItemsById = async (req, res) => {
     try {
-        const item = await ItemInfo.findByPk(req.params.id);
-        if (item) {
-            res.json(item);
+        const moduleId = req.params.id;
+        const items = await ItemInfo.findAll({
+            where: { module_id: moduleId }
+        });
+        if (items) {
+            res.json(items);
         } else {
-            res.status(404).send('Item not found');
+            res.status(404).send('Items not found for this module');
         }
     } catch (error) {
         res.status(500).send(error.message);
