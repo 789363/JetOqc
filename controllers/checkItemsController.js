@@ -1,4 +1,4 @@
-const CheckItems = require('../models/CheckItems');
+const CheckItems = require('../models/CheckInfo');
 
 exports.getAllCheckItems = async (req, res) => {
     try {

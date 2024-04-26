@@ -16,16 +16,10 @@ const CheckItems = sequelize.define('CheckItems', {
       key: 'module_id'
     }
   },
-  checkitem_name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
   description: {
     type: DataTypes.STRING
   },
-  is_critical: {
-    type: DataTypes.BOOLEAN
-  }
+
 }, {
   tableName: 'check_info'
 });
