@@ -27,7 +27,7 @@ const CheckItems = sequelize.define('CheckItems', {
     type: DataTypes.BOOLEAN
   }
 }, {
-  tableName: 'checkitems'
+  tableName: 'check_info'
 });
 
 // 定义模型之间的关系
