@@ -10,7 +10,7 @@ const checkItemsRoutes = require('./routes/checkItemsRoutes');
 const reasonRoutes = require('./routes/reasonRoutes');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json') // 剛剛輸出的 JSON
-
+const moduleOpRoutes = require('./routes/moduleOpRoutes');
 
 
 const app = express();
