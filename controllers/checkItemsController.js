@@ -1,5 +1,5 @@
 const CheckItems = require('../models/CheckInfo');
-
+const ReasonInfo = require('../models/ReasonInfo');  // 引入ReasonInfo模型
 exports.getAllCheckItems = async (req, res) => {
     try {
         const checkItems = await CheckItems.findAll();
@@ -12,9 +12,25 @@ exports.getAllCheckItems = async (req, res) => {
 exports.getCheckItemById = async (req, res) => {
     try {
         const { id } = req.params;
-        const checkItem = await CheckItems.findByPk(id);
+        const checkItem = await CheckItems.findByPk(id, {
+            include: [{
+                model: ReasonInfo,
+                attributes: ['description']  // 只获取原因的描述
+            }]
+        });
+        
         if (checkItem) {
-            res.json(checkItem);
+            // 格式化响应
+            const formattedCheckItem = {
+                id: checkItem.checkitem_id,
+                text: checkItem.description,
+                status: "NA",  // 默认值
+                reasons: checkItem.ReasonInfos.map(reason => reason.description),
+                selectedReason: "NA",  // 默认值
+                disabledReason: true,  // 默认值
+                checked: false  // 默认值
+            };
+            res.json(formattedCheckItem);
         } else {
             res.status(404).send('CheckItem not found');
         }
