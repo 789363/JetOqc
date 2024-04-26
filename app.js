@@ -7,6 +7,7 @@ const lineRoutes = require('./routes/lineRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const resultRoutes = require('./routes/resultRoutes');
 const checkItemsRoutes = require('./routes/checkItemsRoutes');
+const reasonRoutes = require('./routes/reasonRoutes');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json') // 剛剛輸出的 JSON
 
@@ -27,7 +28,7 @@ app.use('/api', lineRoutes);
 app.use('/api', itemRoutes);
 app.use('/api', resultRoutes);
 app.use('/api', checkItemsRoutes);
-
+app.use('/api', reasonRoutes);
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
