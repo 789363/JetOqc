@@ -10,18 +10,20 @@ exports.getAllCheckItems = async (req, res) => {
 };
 
 exports.getCheckItemById = async (req, res) => {
+    console.log(req.params);
     try {
-        const { id } = req.params;
-        const checkItem = await CheckItems.findByPk(id, {
+        const { id } = req.params; // 这里的id现在是指module_id
+        const checkItems = await CheckItems.findAll({
+            where: { module_id: id }, // 修改查询条件为通过module_id查找
             include: [{
                 model: ReasonInfo,
                 attributes: ['description']  // 只获取原因的描述
             }]
         });
-        
-        if (checkItem) {
-            // 格式化响应
-            const formattedCheckItem = {
+
+        if (checkItems.length > 0) {
+            // 格式化响应数组
+            const formattedCheckItems = checkItems.map(checkItem => ({
                 id: checkItem.checkitem_id,
                 text: checkItem.description,
                 status: "NA",  // 默认值
@@ -29,10 +31,10 @@ exports.getCheckItemById = async (req, res) => {
                 selectedReason: "NA",  // 默认值
                 disabledReason: true,  // 默认值
                 checked: false  // 默认值
-            };
-            res.json(formattedCheckItem);
+            }));
+            res.json(formattedCheckItems);
         } else {
-            res.status(404).send('CheckItem not found');
+            res.status(404).send('CheckItems not found');
         }
     } catch (error) {
         res.status(500).send(error.message);
