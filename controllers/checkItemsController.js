@@ -52,15 +52,28 @@ exports.createCheckItem = async (req, res) => {
 };
 
 exports.updateCheckItem = async (req, res) => {
+    console.log(req.params);
+    console.log(req.body);
     try {
         const { id } = req.params;
-        const { module_id, checkitem_name, description, is_critical } = req.body;
-        const updated = await CheckItems.update({ module_id, checkitem_name, description, is_critical }, {
+        const { description, status, reasons, selectedReason } = req.body;
+
+        // 假设你的数据库模型字段名称是这样的，如果不是，请根据实际情况调整
+        const updateData = {
+            description: description, // 前端的text映射到数据库的description
+            status: status, // 前端的status直接映射到数据库的status
+            reasons: JSON.stringify(reasons), // 将数组转换为JSON字符串存储，假设数据库是以JSON字符串形式存储reasons
+            selectedReason: selectedReason
+        };
+
+        const updated = await CheckItems.update(updateData, {
             where: { checkitem_id: id }
         });
-        if (updated) {
+
+        if (updated[0]) {  // update操作返回一个数组，其中第一个元素是受影响的行数
             const updatedCheckItem = await CheckItems.findByPk(id);
             res.json(updatedCheckItem);
+            console.log('suess')
         } else {
             res.status(404).send('CheckItem not found');
         }
