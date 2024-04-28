@@ -25,14 +25,15 @@ exports.getReasonById = async (req, res) => {
 
 exports.createReason = async (req, res) => {
     try {
-        const { description } = req.body;
-        const newReason = await ReasonInfo.create({ description });
+        const { description, checkitem_id } = req.body;
+        console.log(description)
+        console.log(checkitem_id)
+        const newReason = await ReasonInfo.create({ description, checkitem_id });
         res.status(201).json(newReason);
     } catch (error) {
         res.status(400).send(error.message);
     }
 };
-
 exports.updateReason = async (req, res) => {
     try {
         const { id } = req.params;
@@ -52,6 +53,7 @@ exports.updateReason = async (req, res) => {
 exports.deleteReason = async (req, res) => {
     try {
         const { id } = req.params;
+        console.log(id)
         const deleted = await ReasonInfo.destroy({ where: { reason_id: id } });
         if (deleted) {
             res.status(204).send("Reason deleted");
