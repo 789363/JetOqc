@@ -1,13 +1,13 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database');
+const sequelize = require('../database');
 
 const OpInfo = sequelize.define('OpInfo', {
-  Op_id: {
+  op_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  Op_name: {
+  op_name: {
     type: DataTypes.STRING,
     allowNull: false
   }

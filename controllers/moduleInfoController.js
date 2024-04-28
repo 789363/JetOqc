@@ -1,6 +1,39 @@
 const ModuleInfo = require('../models/ModuleInfo'); // 确保正确设置模型路径
 const CheckItems = require('../models/CheckInfo'); // 引入CheckItems模型
 const ItemInfo = require('../models/ItemInfo'); // 引入ItemInfo模型
+const OpInfo = require('../models/OpInfo');
+
+exports.getSetModule = async (req, res) => {
+    try {
+      const moduleId = parseInt(req.params.id);
+      const module = await ModuleInfo.findByPk(moduleId, {
+        include: [{
+          model: OpInfo,
+          as: 'OpInfos',
+          attributes: ['op_id'],
+          through: {
+            attributes: []
+          }
+        }]
+      });
+  
+      if (!module) {
+        return res.status(404).send({ message: 'Module not found.' });
+      }
+  
+      const responseData = {
+        modelId: module.module_id,
+        modelName: module.module_name,
+        canEditOPID: module.OpInfos.map(op => op.op_id.toString())
+      };
+  
+      res.send(responseData);
+    } catch (error) {
+      console.log("Error occurred:", error);
+      res.status(500).send({ message: 'Error retrieving module information.' });
+    }
+  };
+
 exports.getAllModules = async (req, res) => {
     try {
         const modules = await ModuleInfo.findAll();
@@ -54,6 +87,7 @@ exports.updateModule = async (req, res) => {
         res.status(400).send(error.message);
     }
 };
+
 
 exports.deleteModule = async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database');
+const sequelize = require('../database');  // 更新这里的路径
 
 const ItemInfo = sequelize.define('ItemInfo', {
   item_id: {
