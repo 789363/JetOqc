@@ -6,11 +6,13 @@ const {
     createModule,
     updateModule,
     deleteModule,
-    getSetModule
+    getSetModule,
+    getAllSetModules
 } = require('../controllers/moduleInfoController');
 
 router.get('/modules', getAllModules);
 router.get('/modules/:id', getModuleById);
+router.get('/setmodules/', getAllSetModules);
 router.get('/setmodules/:id', getSetModule);  // 使用新的getModule函数
 router.post('/modules', createModule);
 router.put('/modules/:id', updateModule);

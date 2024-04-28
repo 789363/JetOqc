@@ -2,33 +2,34 @@ const { ModuleInfo, ItemInfo, OpInfo } = require('../models/index');
 const CheckItems = require('../models/CheckInfo'); // 引入CheckItems模型
 
 exports.getSetModule = async (req, res) => {
+    const opId = req.params.id; // 从路由参数中获取op_id
     try {
-      const moduleId = parseInt(req.params.id);
-      const module = await ModuleInfo.findByPk(moduleId, {
+      const modules = await ModuleInfo.findAll({
         include: [{
           model: OpInfo,
-          as: 'OpInfos',
-          attributes: ['op_id'],
+          attributes: ['op_id'], // 获取操作人员ID
           through: {
             attributes: []
           }
         }]
       });
   
-      if (!module) {
-        return res.status(404).send({ message: 'Module not found.' });
-      }
+      // 筛选当前操作人员可以编辑的模块
+      const filteredModules = modules.filter(module =>
+        module.OpInfos.some(op => op.op_id.toString() === opId)
+      );
   
-      const responseData = {
+      // 格式化输出，使其与getAllModules的输出格式一致
+      const result = filteredModules.map(module => ({
         modelId: module.module_id,
         modelName: module.module_name,
-        canEditOPID: module.OpInfos.map(op => op.op_id.toString())
-      };
+        canEditOPID: module.OpInfos.map(op => op.op_id) // 包含所有可以编辑此模块的操作人员ID
+      }));
   
-      res.send(responseData);
+      res.json(result);
     } catch (error) {
-      console.log("Error occurred:", error);
-      res.status(500).send({ message: 'Error retrieving module information.' });
+      console.error('Error fetching modules by op ID:', error);
+      res.status(500).send('Internal Server Error');
     }
   };
 
@@ -40,6 +41,32 @@ exports.getAllModules = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+exports.getAllSetModules = async (req, res) => {
+    try {
+        const modules = await ModuleInfo.findAll({
+          include: [{
+            model: OpInfo,
+            attributes: ['op_id'], // 只獲取 op_id
+            through: {
+              attributes: [] // 不從中間表返回任何額外字段
+            }
+          }]
+        });
+    
+        // 轉換數據以符合前端需要的格式
+        const result = modules.map(module => ({
+          modelId: module.module_id,
+          modelName: module.module_name,
+          canEditOPID: module.OpInfos.map(op => op.op_id)  // 注意這裡使用的是關聯後的屬性名稱
+        }));
+    
+        res.json(result);
+      } catch (error) {
+        console.error('Error fetching modules:', error);
+        res.status(500).send('Internal Server Error');
+      }
+    };
 
 exports.getModuleById = async (req, res) => {
     try {
