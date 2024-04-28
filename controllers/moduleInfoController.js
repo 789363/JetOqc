@@ -1,7 +1,5 @@
-const ModuleInfo = require('../models/ModuleInfo'); // 确保正确设置模型路径
+const { ModuleInfo, ItemInfo, OpInfo } = require('../models/index');
 const CheckItems = require('../models/CheckInfo'); // 引入CheckItems模型
-const ItemInfo = require('../models/ItemInfo'); // 引入ItemInfo模型
-const OpInfo = require('../models/OpInfo');
 
 exports.getSetModule = async (req, res) => {
     try {

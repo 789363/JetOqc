@@ -1,4 +1,4 @@
-const ItemInfo = require('../models/ItemInfo');
+const {ItemInfo} = require('../models/index');
 
 exports.getAllItems = async (req, res) => {
     try {

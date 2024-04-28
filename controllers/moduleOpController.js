@@ -1,4 +1,4 @@
-const ModuleOp = require('../models/ModuleOp');
+const {ModuleOp} = require('../models/ModuleOp');
 
 // 获取所有 ModuleOp 关系
 exports.getAllModuleOps = async (req, res) => {

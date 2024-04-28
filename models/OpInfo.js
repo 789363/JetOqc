@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
+const sequelize = require('./database'); // 确保路径正确
 
 const OpInfo = sequelize.define('OpInfo', {
   op_id: {
