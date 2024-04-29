@@ -83,13 +83,20 @@ exports.updateCheckItem = async (req, res) => {
 };
 
 exports.deleteCheckItem = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
+        // 首先刪除所有相關的理由
+        await ReasonInfo.destroy({
+            where: { checkitem_id: id }
+        });
+
+        // 然後刪除檢查項目
         const deleted = await CheckItems.destroy({
             where: { checkitem_id: id }
         });
+
         if (deleted) {
-            res.status(204).send("CheckItem deleted");
+            res.status(204).send("CheckItem and related reasons deleted");
         } else {
             res.status(404).send("CheckItem not found");
         }
