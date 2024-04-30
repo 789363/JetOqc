@@ -1,4 +1,4 @@
-const {ModuleOp} = require('../models/index');
+const {ModuleOp,OpInfo} = require('../models/index');
 
 // 获取所有 ModuleOp 关系
 exports.getAllModuleOps = async (req, res) => {
@@ -29,13 +29,27 @@ exports.getModuleOpById = async (req, res) => {
 // 创建新的 ModuleOp
 exports.createModuleOp = async (req, res) => {
     try {
-        const moduleOp = await ModuleOp.create(req.body);
+        const { module_id, op_id } = req.body;
+
+        // 基本验证：确保 module_id 和 op_id 存在
+        if (!module_id || !op_id) {
+            return res.status(400).send("Missing module_id or op_id in the request.");
+        }
+
+        // 检查 Op_info 表中是否存在指定的 op_id
+        const existingOp = await OpInfo.findOne({ where: { op_id } });
+        if (!existingOp) {
+            // 如果 op_id 不存在，返回 404 错误
+            return res.status(404).send("The requested OP ID does not exist.");
+        }
+
+        // 创建新的 ModuleOp 关系
+        const moduleOp = await ModuleOp.create({ module_id, op_id });
         res.status(201).json(moduleOp);
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(500).send(error.message);
     }
 };
-
 // 更新 ModuleOp
 exports.updateModuleOp = async (req, res) => {
     try {
