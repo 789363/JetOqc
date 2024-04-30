@@ -1,4 +1,4 @@
-const {ModuleOp} = require('../models/ModuleOp');
+const {ModuleOp} = require('../models/index');
 
 // 获取所有 ModuleOp 关系
 exports.getAllModuleOps = async (req, res) => {
@@ -12,6 +12,8 @@ exports.getAllModuleOps = async (req, res) => {
 
 // 获取特定 ModuleOp
 exports.getModuleOpById = async (req, res) => {
+
+
     try {
         const moduleOp = await ModuleOp.findByPk(req.params.id);
         if (moduleOp) {
@@ -38,6 +40,7 @@ exports.createModuleOp = async (req, res) => {
 exports.updateModuleOp = async (req, res) => {
     try {
         const { id } = req.params;
+        console.log(id)
         const [ updated ] = await ModuleOp.update(req.body, { where: { id } });
         if (updated) {
             const updatedModuleOp = await ModuleOp.findByPk(id);
@@ -53,8 +56,13 @@ exports.updateModuleOp = async (req, res) => {
 // 删除 ModuleOp
 exports.deleteModuleOp = async (req, res) => {
     try {
-        const { id } = req.params;
-        const deleted = await ModuleOp.destroy({ where: { id } });
+        const { moduleId, opId } = req.params;  // 从URL参数中获取module_id和op_id
+        const deleted = await ModuleOp.destroy({
+            where: {
+                module_id: moduleId,  // 确保这里的字段名与数据库模型中的对应
+                op_id: opId           // 同上
+            }
+        });
         if (deleted) {
             res.status(204).send("Module-Op relationship deleted");
         } else {

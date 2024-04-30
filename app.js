@@ -28,6 +28,7 @@ app.use('/api', lineRoutes);
 app.use('/api', itemRoutes);
 app.use('/api', resultRoutes);
 app.use('/api', checkItemsRoutes);
+app.use('/api', moduleOpRoutes);
 app.use('/api', reasonRoutes);
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 const PORT = process.env.PORT || 3000;

@@ -8,10 +8,10 @@ const {
     deleteModuleOp
 } = require('../controllers/moduleOpController');
 
-router.get('/', getAllModuleOps);
-router.get('/:id', getModuleOpById);
-router.post('/', createModuleOp);
-router.put('/:id', updateModuleOp);
-router.delete('/:id', deleteModuleOp);
 
+router.get('/moduleops/', getAllModuleOps);
+router.get('/moduleops/:id', getModuleOpById);
+router.post('/moduleops/', createModuleOp);
+router.put('/moduleops/:id', updateModuleOp);
+router.delete('/moduleops/:moduleId/:opId',deleteModuleOp);
 module.exports = router;
