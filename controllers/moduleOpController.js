@@ -30,7 +30,6 @@ exports.getModuleOpById = async (req, res) => {
 exports.createModuleOp = async (req, res) => {
     try {
         const { module_id, op_id } = req.body;
-        console.log(req.body);
         // 基本验证：确保 module_id 和 op_id 存在
         if (!module_id || !op_id) {
             return res.status(400).send("Missing module_id or op_id in the request.");
@@ -65,7 +64,6 @@ exports.createModuleOp = async (req, res) => {
 exports.updateModuleOp = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
         const [ updated ] = await ModuleOp.update(req.body, { where: { id } });
         if (updated) {
             const updatedModuleOp = await ModuleOp.findByPk(id);

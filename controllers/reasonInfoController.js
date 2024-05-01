@@ -12,10 +12,7 @@ exports.getAllReasons = async (req, res) => {
 exports.getReasonById = async (req, res) => {
     try {
         const { id } = req.params; // 从req.params获取id
-        console.log(id) // 输出id用于调试
         const reasons = await ReasonInfo.findAll({ where: { checkitem_id: id } }); // 使用id值查询checkitem_id字段
-        console.log(reasons)
-        console.log(reasons, 132) // 输出调试信息
         if (reasons.length > 0) {
             res.json(reasons);
         } else {
@@ -29,10 +26,6 @@ exports.getReasonById = async (req, res) => {
 exports.createReason = async (req, res) => {
     try {
         const { description, checkitem_id } = req.body;
-        console.log(123)
-        console.log(description)
-        console.log(checkitem_id)
-        console.log(456)
         const newReason = await ReasonInfo.create({ description, checkitem_id });
         res.status(201).json(newReason);
     } catch (error) {
@@ -58,7 +51,6 @@ exports.updateReason = async (req, res) => {
 exports.deleteReason = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
         const deleted = await ReasonInfo.destroy({ where: { reason_id: id } });
         if (deleted) {
             res.status(204).send("Reason deleted");
