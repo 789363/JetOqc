@@ -30,7 +30,7 @@ exports.getModuleOpById = async (req, res) => {
 exports.createModuleOp = async (req, res) => {
     try {
         const { module_id, op_id } = req.body;
-
+        console.log(req.body);
         // 基本验证：确保 module_id 和 op_id 存在
         if (!module_id || !op_id) {
             return res.status(400).send("Missing module_id or op_id in the request.");
@@ -43,13 +43,24 @@ exports.createModuleOp = async (req, res) => {
             return res.status(404).send("The requested OP ID does not exist.");
         }
 
+        // 检查 ModuleOp 表中是否已存在相同的 module_id 和 op_id 组合
+        const existingModuleOp = await ModuleOp.findOne({ where: { module_id, op_id } });
+        if (existingModuleOp) {
+            // 如果关系已存在，返回 403 错误
+            return res.status(403).send("The relationship between the given module and operation already exists.");
+        }
+
         // 创建新的 ModuleOp 关系
         const moduleOp = await ModuleOp.create({ module_id, op_id });
         res.status(201).json(moduleOp);
     } catch (error) {
+        console.error(error);
         res.status(500).send(error.message);
     }
 };
+
+
+
 // 更新 ModuleOp
 exports.updateModuleOp = async (req, res) => {
     try {

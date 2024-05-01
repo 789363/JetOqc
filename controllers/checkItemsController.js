@@ -44,6 +44,7 @@ exports.getCheckItemById = async (req, res) => {
 exports.createCheckItem = async (req, res) => {
     try {
         const { module_id, checkitem_name, description, is_critical } = req.body;
+        console.log(req.body)
         const newCheckItem = await CheckItems.create({ module_id, checkitem_name, description, is_critical });
         res.status(201).json(newCheckItem);
     } catch (error) {
