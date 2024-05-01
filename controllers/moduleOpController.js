@@ -12,14 +12,16 @@ exports.getAllModuleOps = async (req, res) => {
 
 // 获取特定 ModuleOp
 exports.getModuleOpById = async (req, res) => {
-
-
     try {
-        const moduleOp = await ModuleOp.findByPk(req.params.id);
-        if (moduleOp) {
-            res.json(moduleOp);
+        const moduleOps = await ModuleOp.findAll({
+            where: {
+                module_id: req.params.id
+            }
+        });
+        if (moduleOps.length > 0) {
+            res.json(moduleOps);
         } else {
-            res.status(404).send('Module-Op relationship not found');
+            res.status(404).send('Module-Op relationships not found for the specified ModuleId');
         }
     } catch (error) {
         res.status(500).send(error.message);
