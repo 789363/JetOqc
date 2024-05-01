@@ -99,20 +99,24 @@ exports.createModule = async (req, res) => {
 };
 
 exports.updateModule = async (req, res) => {
-    try {
-        const result = await ModuleInfo.update(req.body, {
-            where: { module_id: req.params.id }
-        });
-        if (result[0] === 1) {
-            res.send('Module updated successfully');
-        } else {
-            res.status(404).send('Module not found');
-        }
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-};
+  try {
+      const { module_name } = req.body;
+      const id = req.params.id;
 
+      const result = await ModuleInfo.update({ module_name }, {
+          where: { module_id: id }
+      });
+
+      if (result[0] === 1) { // 检查是否成功更新了一行
+          const updatedModule = await ModuleInfo.findOne({ where: { module_id: id } });
+          res.status(200).json(updatedModule); // 返回更新后的模型数据
+      } else {
+          res.status(404).send('Module not found');
+      }
+  } catch (error) {
+      res.status(400).send(error.message);
+  }
+};
 
 exports.deleteModule = async (req, res) => {
     try {

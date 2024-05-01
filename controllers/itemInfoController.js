@@ -35,6 +35,7 @@ exports.createItem = async (req, res) => {
 };
 
 exports.updateItem = async (req, res) => {
+    console.log(req.body)
     try {
         const result = await ItemInfo.update(req.body, {
             where: { item_id: req.params.id }
