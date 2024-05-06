@@ -41,6 +41,11 @@ app.use('/api', reasonRoutes);
 // 配置 Swagger 文檔路由
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+// 添加預設路由
+app.get('/', (req, res) => {
+    res.send('Success');  // 當訪問根URL('/')時回應 'Success'
+});
+
 // 定義服務器監聽的端口
 const PORT = process.env.PORT || 3000;
 // 啟動服務器

@@ -43,7 +43,9 @@ async function checkAndCreateDatabase() {
     console.log('Database tables created/updated.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+    console.log( error)
     if (error.name === 'SequelizeConnectionError') {
+
       await ensureDatabaseExists();
       await sequelize.authenticate();
       await sequelize.sync();
