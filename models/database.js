@@ -1,12 +1,14 @@
 const { Sequelize } = require('sequelize');
 const mysql = require('mysql2/promise');
 
+require('dotenv').config();
+
 const databaseConfig = {
-  host: 'localhost',
-  port: '2001',
-  user: 'root',
-  password: 'jet-admin',
-  database: 'mydb'
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 };
 
 const sequelize = new Sequelize(databaseConfig.database, databaseConfig.user, databaseConfig.password, {
@@ -22,34 +24,30 @@ const sequelize = new Sequelize(databaseConfig.database, databaseConfig.user, da
   }
 });
 
+async function ensureDatabaseExists() {
+  const connection = await mysql.createConnection({
+    host: databaseConfig.host,
+    port: databaseConfig.port,
+    user: databaseConfig.user,
+    password: databaseConfig.password
+  });
+  await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseConfig.database}`);
+  await connection.end();
+}
+
 async function checkAndCreateDatabase() {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
-    // 直接在成功连接后同步模型到数据库
     await sequelize.sync();
     console.log('Database tables created/updated.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
     if (error.name === 'SequelizeConnectionError') {
-      try {
-        const connection = await mysql.createConnection({
-          host: databaseConfig.host,
-          port: databaseConfig.port,
-          user: databaseConfig.user,
-          password: databaseConfig.password
-        });
-        await connection.query(`CREATE DATABASE IF NOT EXISTS ${databaseConfig.database}`);
-        await connection.end();
-        console.log('Database created successfully.');
-
-        // 创建数据库后重新连接并同步模型
-        await sequelize.authenticate();
-        await sequelize.sync();
-        console.log('Database tables created/updated after reconnection.');
-      } catch (err) {
-        console.error('Failed to create the database or sync models:', err);
-      }
+      await ensureDatabaseExists();
+      await sequelize.authenticate();
+      await sequelize.sync();
+      console.log('Database tables created/updated after reconnection.');
     }
   }
 }
