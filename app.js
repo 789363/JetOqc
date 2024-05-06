@@ -10,6 +10,8 @@ const itemRoutes = require('./routes/itemRoutes');
 const resultRoutes = require('./routes/resultRoutes');
 const checkItemsRoutes = require('./routes/checkItemsRoutes');
 const reasonRoutes = require('./routes/reasonRoutes');
+// 引入初始化管理者帳號函式
+const createManageUser = require('./models/createManage'); // 导入createAdminUser函数
 // 引入 Swagger UI 來自動生成 API 文件
 const swaggerUi = require('swagger-ui-express');
 // 加載 Swagger JSON 配置文件
@@ -50,5 +52,6 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3000;
 // 啟動服務器
 app.listen(PORT, () => {
+    createManageUser()
     console.log(`Server is running on http://localhost:${PORT}`); // 伺服器啟動時輸出運行端口
 });
