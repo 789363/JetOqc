@@ -1,4 +1,4 @@
-const { OpInfo } = require('../models/index'); // 使用解构赋值正确导入 OpInfo 模型
+const { OpInfo } = require('../models/index'); 
 exports.getAllOps = async (req, res) => {
     try {
         const Ops = await OpInfo.findAll();

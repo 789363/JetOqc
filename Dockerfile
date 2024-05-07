@@ -1,20 +1,20 @@
-# 使用带有 Node.js 的基础镜像
+# 使用帶有 Node.js 的基礎鏡像
 FROM node:16
 
-# 设置工作目录
+# 設置工作目錄
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json
+# 複製 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装项目依赖
+# 安裝項目依賴
 RUN npm install
 
-# 复制项目文件到容器中
+# 複製項目文件到容器中
 COPY . .
 
-# 应用运行在哪个端口
+# 應用運行在哪個端口
 EXPOSE 3000
 
-# 使用 npm run start 启动应用
+# 使用 npm run start 啟動應用
 CMD ["npm", "run", "start"]

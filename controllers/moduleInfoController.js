@@ -1,29 +1,28 @@
 const { ModuleInfo, ItemInfo, OpInfo } = require('../models/index');
-const CheckItems = require('../models/CheckInfo'); // 引入CheckItems模型
+const CheckItems = require('../models/CheckInfo'); 
 
 exports.getSetModule = async (req, res) => {
-    const opId = req.params.id; // 从路由参数中获取op_id
+    const opId = req.params.id; 
     try {
       const modules = await ModuleInfo.findAll({
         include: [{
           model: OpInfo,
-          attributes: ['op_id'], // 获取操作人员ID
+          attributes: ['op_id'], 
           through: {
             attributes: []
           }
         }]
       });
   
-      // 筛选当前操作人员可以编辑的模块
       const filteredModules = modules.filter(module =>
         module.OpInfos.some(op => op.op_id.toString() === opId)
       );
   
-      // 格式化输出，使其与getAllModules的输出格式一致
+   
       const result = filteredModules.map(module => ({
         modelId: module.module_id,
         modelName: module.module_name,
-        canEditOPID: module.OpInfos.map(op => op.op_id) // 包含所有可以编辑此模块的操作人员ID
+        canEditOPID: module.OpInfos.map(op => op.op_id) 
       }));
   
       res.json(result);
@@ -47,18 +46,17 @@ exports.getAllSetModules = async (req, res) => {
         const modules = await ModuleInfo.findAll({
           include: [{
             model: OpInfo,
-            attributes: ['op_id'], // 只獲取 op_id
+            attributes: ['op_id'], 
             through: {
-              attributes: [] // 不從中間表返回任何額外字段
+              attributes: [] 
             }
           }]
         });
-    
-        // 轉換數據以符合前端需要的格式
+  
         const result = modules.map(module => ({
           modelId: module.module_id,
           modelName: module.module_name,
-          canEditOPID: module.OpInfos.map(op => op.op_id)  // 注意這裡使用的是關聯後的屬性名稱
+          canEditOPID: module.OpInfos.map(op => op.op_id)  
         }));
     
         res.json(result);
@@ -72,11 +70,11 @@ exports.getModuleById = async (req, res) => {
     try {
         const module = await ModuleInfo.findByPk(req.params.id, {
             include: [{
-                model: CheckItems, // 添加CheckItems到查询中
-                as: 'checkItems' // 这个'as'是可选的，取决于你在模型关联中如何命名
+                model: CheckItems, 
+                as: 'checkItems' 
             }, {
-                model: ItemInfo, // 添加ItemInfo到查询中
-                as: 'items' // 这个'as'是可选的，同上
+                model: ItemInfo, 
+                as: 'items' 
             }]
         });
         if (module) {
@@ -107,9 +105,9 @@ exports.updateModule = async (req, res) => {
           where: { module_id: id }
       });
 
-      if (result[0] === 1) { // 检查是否成功更新了一行
+      if (result[0] === 1) { 
           const updatedModule = await ModuleInfo.findOne({ where: { module_id: id } });
-          res.status(200).json(updatedModule); // 返回更新后的模型数据
+          res.status(200).json(updatedModule); 
       } else {
           res.status(404).send('Module not found');
       }

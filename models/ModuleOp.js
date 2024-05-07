@@ -5,14 +5,14 @@ const ModuleOp = sequelize.define('ModuleOp', {
   module_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'ModuleInfo',  // 注意：这里使用字符串是因为模型可能还未加载
+      model: 'ModuleInfo', 
       key: 'module_id'
     }
   },
   op_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'OpInfo',  // 同上
+      model: 'OpInfo',  
       key: 'op_id'
     }
   }

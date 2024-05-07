@@ -11,8 +11,8 @@ exports.getAllReasons = async (req, res) => {
 
 exports.getReasonById = async (req, res) => {
     try {
-        const { id } = req.params; // 从req.params获取id
-        const reasons = await ReasonInfo.findAll({ where: { checkitem_id: id } }); // 使用id值查询checkitem_id字段
+        const { id } = req.params; 
+        const reasons = await ReasonInfo.findAll({ where: { checkitem_id: id } }); 
         if (reasons.length > 0) {
             res.json(reasons);
         } else {
