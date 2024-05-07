@@ -1,20 +1,20 @@
-# 使用帶有 Node.js 的基礎鏡像
+# 使用带有 Node.js 的基础镜像
 FROM node:16
 
-# 設置工作目錄
+# 设置工作目录
 WORKDIR /app
 
-# 複製 package.json 和 package-lock.json
+# 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安裝項目依賴
-RUN npm install
+# 安装项目依赖，包括全局安装 PM2
+RUN npm install && npm install pm2 -g
 
-# 複製項目文件到容器中
+# 复制项目文件到容器中
 COPY . .
 
-# 應用運行在哪個端口
+# 应用运行在哪个端口
 EXPOSE 3000
 
-# 使用 npm run start 啟動應用
-CMD ["npm", "run", "start"]
+# 使用 PM2 启动应用
+CMD ["pm2-runtime", "start", "npm", "--", "start"]
