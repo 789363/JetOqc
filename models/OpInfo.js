@@ -3,9 +3,8 @@ const sequelize = require('./database');
 
 const OpInfo = sequelize.define('OpInfo', {
   op_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
-    autoIncrement: true
   },
   op_name: {
     type: DataTypes.STRING,

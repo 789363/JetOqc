@@ -23,7 +23,16 @@ exports.getOpById = async (req, res) => {
 
 exports.createOp = async (req, res) => {
     try {
-        const Op = await OpInfo.create(req.body);
+        // 获取 URL 中的 ID
+        const opId = req.params.id;
+
+        // 创建新记录，这里假设你的模型接受外部 ID
+        const Op = await OpInfo.create({
+            op_id: opId,
+            op_name:"user",
+            ...req.body  // 其他从请求体中获取的数据
+        });
+
         res.status(201).json(Op);
     } catch (error) {
         res.status(400).send(error.message);

@@ -10,7 +10,7 @@ const {
 
 router.get('/ops', getAllOps);
 router.get('/ops/:id', getOpById);
-router.post('/ops', createOp);
+router.post('/ops/:id', createOp);
 router.put('/ops/:id', updateOp);
 router.delete('/ops/:id', deleteOp);
 
