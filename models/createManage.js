@@ -6,7 +6,7 @@ async function createManageUser() {
         const adminExists = await OpInfo.findOne({ where: { op_name: 'manage' } });
         if (!adminExists) {
             await OpInfo.create({
-              op_id:999999,
+              op_id:"ekroot",
               op_name:"manage"     
             });
             console.log('Manage user created successfully.');
